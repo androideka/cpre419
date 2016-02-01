@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="commons-cli-1.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/hadoopjarfiles/commons-cli-1.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/hadoopjarfiles/commons-codec-1.4.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/hadoopjarfiles/commons-logging-1.1.3.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/hadoopjarfiles/hadoop-annotations-2.4.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/hadoopjarfiles/hadoop-common-2.4.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/hadoopjarfiles/hadoop-mapreduce-client-core-2.4.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/guava-18.0.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-collections.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-configuration-1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-lang-2.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
