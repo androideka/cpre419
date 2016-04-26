@@ -1,0 +1,45 @@
+composite NumberedCat {
+	
+    graph
+      stream<rstring contents> Lines = FileSource(){
+	param 
+	  format : line;
+	  file : getSubmissionTimeValue("file");
+      }
+
+      stream<rstring contents> Numbered = Functor(Lines) {
+	logic 
+	  state : { mutable int32 i = 0; }
+	  
+	  onTuple Lines : { i++; }
+          output Numbered : contents = ((rstring) i + " " + contents);
+      }
+
+      stream <list<rstring> words> OneLine = Functor(Lines) {
+	output
+	  OneLine : words = tokenize(contents, " \t", false);
+      }
+
+      stream<rstring counts> Counter = Functor(OneLine) {
+	logic 
+	  state : { mutable int32 hist = 0; mutable int32 adv = 0; }
+	
+	  onTuple OneLine:
+	    for(int32 i in range(size(words))) {
+	      if(words[i] == "history") hist++;
+	      if(words[i] == "adventure") adv++;
+	    }
+	  onPunct OneLine: {
+	    if( currentPunct() == Sys.FinalMarker) {println("History count: " + (rstring)hist + ", adventure count: " + (rstring)adv);}
+	  }
+	  output
+	    Counter : counts = "hello";
+      }
+
+      () as Sink = FileSink(Numbered) {
+	param 
+	  file : "bigresults.txt";
+	  format : line;
+      }
+
+}

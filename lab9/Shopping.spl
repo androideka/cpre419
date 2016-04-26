@@ -1,0 +1,42 @@
+composite Shopping {
+	
+    graph
+      stream<rstring id, rstring first, rstring last, int32 purchase> Lines = FileSource(){
+	param 
+	  format : csv;
+	  separator : ",";
+	  hasHeaderLine : true;
+	  file : getSubmissionTimeValue("file");
+      }
+
+      stream<rstring customer_id, rstring customer_name, int32 customer_purchase, float64 customer_discount> Shoppers = Custom(Lines) {
+	logic 
+	  onTuple Lines : {
+	    mutable rstring name = Lines.first + " " + Lines.last;
+	    mutable float64 discount = 0.0;
+	    if(Lines.purchase > 1000) {
+		discount = (float64)((float64)purchase * 0.05);
+	    }
+	    else if(Lines.purchase > 500) {
+		discount = (float64)((float64)purchase * 0.02);
+	    }
+	    else if(Lines.purchase > 250) {
+		discount = (float64)((float64)purchase * 0.01);
+	    }
+	
+	    submit ({customer_id=Lines.id, customer_name=name, customer_purchase=Lines.purchase, customer_discount=discount}, Shoppers);
+	  }
+      }
+
+      stream<rstring discounts> Discounts = Functor(Shoppers) {
+	output
+	  Discounts : discounts = (rstring)Shoppers;
+      }
+
+      () as Sink = FileSink(Discounts) {
+	param 
+	  file : "discounts.txt";
+	  format : line;
+      }
+
+}
